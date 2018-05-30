@@ -1,14 +1,22 @@
 {
   "name": "simple-nn",
   "version": "1.0.0",
-  "description": "simple neural network implementation",
+  "description": "Simple neural network implementation",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
   "repository": "https://github.com/santiq/simple-nn",
   "license": "MIT",
-  "keywords": [],
+  "keywords": [
+    "neural network",
+    "machine learning",
+    "nn",
+    "matrix",
+    "feedfoward",
+    "perceptron"
+  ],
   "scripts": {
+    "start": "ts-node src/index",
     "info": "npm-scripts-info",
     "build": "run-s clean && run-p build:*",
     "build:main": "tsc -p tsconfig.json",
@@ -51,8 +59,12 @@
   "engines": {
     "node": ">=8.9"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@types/node": "^10.1.4",
+    "easy-table": "^1.1.1"
+  },
   "devDependencies": {
+    "@types/easy-table": "0.0.31",
     "ava": "^1.0.0-beta.3",
     "codecov": "^3.0.0",
     "cz-conventional-changelog": "^2.1.0",
@@ -65,6 +77,7 @@
     "prettier": "^1.10.2",
     "standard-version": "^4.0.0",
     "trash-cli": "^1.4.0",
+    "ts-node": "^6.0.5",
     "tslint": "^5.4.3",
     "tslint-config-prettier": "^1.8.0",
     "tslint-immutable": "^4.5.1",
