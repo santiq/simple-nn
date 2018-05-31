@@ -1,5 +1,3 @@
-import Table from 'easy-table';
-
 export class Matrix {
 
   public static fromArray(array: number[][]): Matrix | undefined {
@@ -54,6 +52,10 @@ export class Matrix {
     }
   }
 
+  /**
+   * Multiply element wise
+   * @param operand Matrix for Haramad multplication or number for scalar multiplication
+   */
   public multiplyElementWise (operand: Matrix | number): Matrix {
     if (operand instanceof Matrix) {
       if (operand.rows !== this.rows || operand.columns !== this.columns) {
@@ -77,15 +79,19 @@ export class Matrix {
     }
   }
 
-  public product (b: Matrix ): Matrix {
+  public dotProduct (b: Matrix ): Matrix {
     if(this.columns !== b.rows) {
       return this.clone();
     } else {
-      const result = new Matrix(this.rows, this.columns);
-
-
-
-
+      const result = new Matrix(this.rows, b.columns);
+      for (let i = 0, rows = this.rows; i < rows; i++) {
+        for (let j = 0, cols = b.columns; j < cols; j++) {
+          result.data[i][j] = 0;
+          for(let k = 0, ocols = this.columns; k<ocols; k++) {
+            result.data[i][j] += this.data[i][k] * b.data[k][j];
+          }
+        }
+      }
       return result;
     }
   }
@@ -125,10 +131,6 @@ export class Matrix {
       }
     }
     return result;
-  }
-
-  public print(): void {
-    Table.log(this.data);
   }
 
 }
