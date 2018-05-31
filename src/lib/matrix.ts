@@ -1,10 +1,11 @@
 export class Matrix {
 
-  public static fromArray(array: number[][]): Matrix | undefined {
-    if(!array[0]) {
-      return undefined;
+  public static fromArray(array: number[]): Matrix {
+    const result = new Matrix(array.length, 1);
+    for (let i = 0; i < result.rows; i++) {
+      result.data[i][0] = array[i];
     }
-    return new Matrix(array.length, array[0].length);
+    return result;
   }
 
   public data: number[][] = [];
@@ -23,10 +24,16 @@ export class Matrix {
   }
 
   /**
-   * Returns the array of data that it's inside the matrix
+   * Returns the data from inside the matrix as a single dimensional array
    */
-  public toArray(): number[][] {
-    return this.clone().data;
+  public toArray(): number[] {
+    const result = [];
+    for (let i = 0; i < this.rows; i++) {
+      for (let j = 0; j < this.columns; j++) {
+        result.push(this.data[i][j]);
+      }
+    }
+    return result;
   }
 
   public add(operand: Matrix | number): Matrix {
@@ -46,6 +53,29 @@ export class Matrix {
       for (let i = 0, rows = this.rows; i < rows; i++) {
         for (let j = 0, cols = this.columns; j < cols; j++) {
           result.data[i][j] += operand;
+        }
+      }
+      return result;
+    }
+  }
+
+  public subtract(operand: Matrix | number): Matrix {
+    if (operand instanceof Matrix) {
+      if (operand.rows !== this.rows || operand.columns !== this.columns) {
+        return this.clone();
+      }
+      const result = this.clone();
+      for (let i = 0, rows = operand.rows; i < rows; i++) {
+        for (let j = 0, cols = operand.columns; j < cols; j++) {
+          result.data[i][j] -= operand.data[i][j];
+        }
+      }
+      return result;
+    } else {
+      const result = this.clone();
+      for (let i = 0, rows = this.rows; i < rows; i++) {
+        for (let j = 0, cols = this.columns; j < cols; j++) {
+          result.data[i][j] -= operand;
         }
       }
       return result;
@@ -106,11 +136,11 @@ export class Matrix {
     return result;
   }
 
-  public randomize(): Matrix {
+  public randomize(min: number = 0, max: number = 1): Matrix {
     const result = this.clone();
     for (let i = 0, rows = this.rows; i < rows; i++) {
       for (let j = 0, cols = this.columns; j < cols; j++) {
-        result.data[i][j] = Math.round(Math.random());
+        result.data[i][j] = this.random(min,max);
       }
     }
     return result;
@@ -131,6 +161,10 @@ export class Matrix {
       }
     }
     return result;
+  }
+
+  private random(minimum: number, maximum: number): number {
+    return Math.round(Math.random() * (maximum - minimum + 1) + minimum);
   }
 
 }
